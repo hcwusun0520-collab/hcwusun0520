@@ -1,0 +1,232 @@
+a沒問題！為了讓您的網站更符合「科技現代專業 AI」的風格 ，我為您加入了一組「霓虹水波紋 (Neon Ripple)」全局點擊特效。
+
+現在，只要瀏覽者在網頁的任何地方點擊滑鼠，游標位置就會瞬間產生一個由水藍色與紫色交織的發光科技圓環，並向外擴散消失，大幅提升網站的動態互動感與精緻度！
+
+以下是為您整合了之前所有修正（包含等比不失真大頭照 、線上圖片連結 ）與最新點擊特效的完整程式碼，請直接複製並取代您的 `index.html` 檔案：
+
+### 💻 網頁原始碼 (新增霓虹點擊特效版)
+
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 專案經理 | 秀娟 個人簡介</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #1a2235;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --neon-cyan: #00f2fe;
+            --neon-purple: #8e2de2;
+            --accent-color: #4facfe;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            position: relative; /* 點擊特效定位基準 */
+            overflow-x: hidden;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+
+        /* --- Header & Profile Image --- */
+        header { text-align: center; padding: 4rem 0 2rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .profile-wrapper { display: inline-block; margin-bottom: 2rem; }
+        
+        .profile-pic {
+            width: 250px; 
+            height: 250px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            padding: 6px; 
+            animation: float 3s ease-in-out infinite;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        .profile-pic img {
+            width: 100%; 
+            height: 100%; 
+            border-radius: 50%; 
+            object-fit: contain;       
+            background-color: #fff;  
+            border: 4px solid #fff;  
+            padding: 8px;            
+        }
+        
+        .profile-pic:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(142, 45, 226, 0.8);
+            animation-play-state: paused;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        h1 { font-size: 2.2rem; margin-bottom: 0.5rem; background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple)); -webkit-background-clip: text; color: transparent; }
+        h2 { font-size: 1.2rem; color: var(--text-muted); font-weight: 400; margin-bottom: 1.5rem; }
+        .contact-info { display: inline-block; background: rgba(255, 255, 255, 0.05); padding: 0.6rem 2rem; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); color: var(--neon-cyan); text-decoration: none; transition: 0.3s; font-weight: bold; letter-spacing: 1px; }
+        .contact-info:hover { background: rgba(0, 242, 254, 0.1); box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); }
+        .contact-info:active { transform: scale(0.95); } /* 按鈕點擊微縮特效 */
+
+        /* --- Sections --- */
+        section { padding: 3rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        section h3 { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--accent-color); display: flex; align-items: center; }
+        section h3::before { content: ''; display: inline-block; width: 8px; height: 24px; background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-purple)); margin-right: 12px; border-radius: 4px; }
+        p { margin-bottom: 1rem; color: var(--text-muted); text-align: justify; }
+        .highlight-quote { background: rgba(142, 45, 226, 0.1); border-left: 4px solid var(--neon-purple); padding: 1rem 1.5rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; color: #fff; font-style: italic; }
+
+        /* --- Grid Cards --- */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .card { background: var(--card-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s, box-shadow 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-color: rgba(142, 45, 226, 0.4); }
+        .card h4 { color: #fff; margin-bottom: 1rem; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; }
+        ul { list-style-type: none; }
+        ul li { margin-bottom: 0.6rem; padding-left: 1.5rem; position: relative; color: var(--text-muted); }
+        ul li::before { content: '▹'; position: absolute; left: 0; color: var(--neon-cyan); font-weight: bold; }
+
+        /* --- Tags --- */
+        .tags { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem; }
+        .tag { background: rgba(79, 172, 254, 0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.9rem; border: 1px solid rgba(79, 172, 254, 0.3); transition: 0.3s; cursor: default; }
+        .tag:hover { background: rgba(142, 45, 226, 0.2); border-color: rgba(142, 45, 226, 0.5); box-shadow: 0 0 10px rgba(142, 45, 226, 0.3); transform: scale(1.05); }
+
+        /* --- 點擊特效 (Neon Ripple) --- */
+        .click-ripple {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-purple);
+            transform: translate(-50%, -50%);
+            animation: ripple-animation 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            pointer-events: none; /* 確保不干擾下方元素點擊 */
+            z-index: 9999;
+        }
+
+        @keyframes ripple-animation {
+            0% { width: 0; height: 0; opacity: 1; border-width: 4px; }
+            100% { width: 120px; height: 120px; opacity: 0; border-width: 1px; }
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) { .container { padding: 1.5rem; } h1 { font-size: 1.5rem; } .profile-pic { width: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="profile-wrapper">
+                <div class="profile-pic">
+                    <img src="https://duk.tw/IIC0eU.jpg" alt="秀娟 個人大頭照">
+                </div>
+            </div>
+            <h1>AI 專案經理｜前 IC Layout／製造產線副理</h1>
+            <h2>跨域 AI 數位轉型實踐者｜智慧製造 × AI 應用 × 教育培訓</h2>
+            <a href="mailto:hcwusun0520@gmail.com" class="contact-info">hcwusun0520@gmail.com</a>
+        </header>
+
+        <section>
+            <h3>從精密電路到 AI 轉型：跨域整合的實踐者</h3>
+            <p>我擁有超過 20 年跨領域實務經驗，職涯橫跨半導體 IC Layout、製造管理、教育培訓與 AI 數位轉型領域。早期於高精密度的半導體產業擔任 IC Layout、採購、系統整合、FAE工程相關職務，並曾於某科技擔任製造管理課產線副理 (負責IC Testing 部門與Wafer 製程部門)，長期累積「高邏輯、高精度、高穩定性」的工程思維。這段經歷讓我具備扎實的 Debug 能力、流程優化能力與系統性分析能力，也奠定我後續跨入 AI 領域的重要基礎。</p>
+            <p>近年專注於 AI 應用、智慧製造與數位轉型實務落地，持續投入生成式 AI、Prompt Engineering、智慧工廠、IIoT、能源數據分析與 AI 專案整合等方向，並逐步建立「從工廠現場到 AI 應用」的跨域整合能力。</p>
+            <div class="highlight-quote">我相信：真正能推動企業數位轉型的人，不只是懂 AI，更要懂產線、懂流程、懂企業真正的痛點。</div>
+        </section>
+
+        <section>
+            <h3>我的核心優勢</h3>
+            <div class="grid-container">
+                <div class="card">
+                    <h4>■ 工程級邏輯 × AI 應用整合能力</h4>
+                    <p>超過 25 年 IC Layout、採購、系統整合、FAE 與製造管理經驗，培養出嚴謹的邏輯架構與問題拆解能力。</p>
+                    <ul>
+                        <li>結構化 Prompt</li>
+                        <li>高穩定 AI 指令流程</li>
+                        <li>可落地的 AI 自動化應用</li>
+                        <li>更高品質的 AI 產出結果</li>
+                    </ul>
+                    <p style="margin-top: 10px; color: var(--neon-cyan);">我擅長把「工程邏輯」轉化成「AI 生產力」。</p>
+                </div>
+                <div class="card">
+                    <h4>■ 技術轉譯能力 × 教育溝通能力</h4>
+                    <p>具備超過 12 年教育現場經驗 (包含電腦教師與兒童程式培訓講師)，長期的教育經驗讓我非常擅長將艱深技術轉譯成容易理解的語言。</p>
+                    <p style="margin-top: 10px; color: var(--neon-cyan);">這項能力在推動傳統產業數位轉型時尤其重要，因為真正的轉型，往往不是技術問題，而是「溝通問題」。</p>
+                </div>
+                <div class="card">
+                    <h4>■ 源自製造業背景的務實思維</h4>
+                    <p>成長於金屬加工與雷射加工製造業家庭，深刻理解中小企業最在意：成本效益、導入風險、產線穩定性與人員接受度。</p>
+                    <p style="margin-top: 10px; color: var(--neon-cyan);">「不影響既有產線運作的前提下，逐步創造數位轉型價值。」</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3>專案實作能力</h3>
+            <p>近期參與 AI 智慧機械相關專案，具備從底層硬體到 AI 應用端的完整軟硬整合實作能力：</p>
+            <div class="tags">
+                <span class="tag">硬體組裝</span><span class="tag">焊接配線</span><span class="tag">感測器整合</span>
+                <span class="tag">驅動控制</span><span class="tag">AI 程式除錯</span><span class="tag">系統整合測試</span>
+            </div>
+        </section>
+
+        <section>
+            <h3>專業認證</h3>
+            <p>持續投入 AI、資料分析、智慧製造與數位轉型相關技術學習：</p>
+            <div class="tags">
+                <span class="tag">TQC 生成式 AI 專業級</span><span class="tag">Microsoft Azure AI-900</span>
+                <span class="tag">ITS AI 國際認證</span><span class="tag">ITS Python</span>
+                <span class="tag">Google GA4 國際認證</span><span class="tag">AUTOCAD 國際原廠認證</span>
+                <span class="tag">溝通談判策略管理師 CNSM/CNSP</span><span class="tag">台灣人工智慧學校 AI 素養級認證</span>
+                <span class="tag">Google AI for Educators</span><span class="tag">Scratch + Microbit / Minecraft / Codey Rocky 師資認證</span>
+            </div>
+        </section>
+
+        <section>
+            <h3>研究與職涯目標</h3>
+            <div class="grid-container">
+                <div class="card">
+                    <h4>【未來進修方向】</h4>
+                    <p>目前規劃進修資管研究所，聚焦於：</p>
+                    <ul><li>AI 智慧工廠</li><li>能源數據分析</li><li>AI + ESG 應用</li><li>製造業AI導入策略</li></ul>
+                </div>
+                <div class="card">
+                    <h4>【職涯目標】</h4>
+                    <p>積極尋求發揮「工程實務 × AI 技術」的舞台：</p>
+                    <ul><li>AI 專案經理</li><li>智慧製造顧問</li><li>傳產數位轉型顧問</li></ul>
+                </div>
+            </div>
+        </section>
+        
+        <footer style="text-align: center; padding: 3rem 0 2rem 0; color: var(--text-main); border-top: 1px solid rgba(255,255,255,0.05);">
+            <p style="font-size: 1.1rem;">如果您的企業正在尋找一位：</p>
+            <p style="font-size: 1.2rem; color: var(--neon-cyan); font-weight: bold; margin: 0.5rem 0 1.5rem 0;">既懂工廠現場、又能真正落地 AI 應用的人</p>
+            <a href="mailto:hcwusun0520@gmail.com" class="contact-info">歡迎與我交流合作</a>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            // 創建特效元素
+            const ripple = document.createElement('div');
+            ripple.classList.add('click-ripple');
+            
+            // 根據滑鼠點擊位置設定座標 (考量頁面滾動)
+            ripple.style.left = e.pageX + 'px';
+            ripple.style.top = e.pageY + 'px';
+            
+            document.body.appendChild(ripple);
+            
+            // 動畫結束後移除元素，避免DOM負擔過重
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    </script>
+</body>
+</html>
